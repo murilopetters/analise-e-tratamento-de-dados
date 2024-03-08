@@ -1,187 +1,152 @@
-#Importando a biblioteca
+# Importando as bibliotecas
 import pandas as pd
+import matplotlib.pyplot as plt
 
-#Leitura dos arquivos
+# Leitura dos arquivos
 df1 = pd.read_excel("Aracaju.xlsx")
 df2 = pd.read_excel("Fortaleza.xlsx")
 df3 = pd.read_excel("Natal.xlsx")
 df4 = pd.read_excel("Recife.xlsx")
 df5 = pd.read_excel("Salvador.xlsx")
 
-df5.head()
+# Juntando todos os arquivos
+df = pd.concat([df1, df2, df3, df4, df5])
 
-#Juntando todos os arquivos
-df = pd.concat([df1,df2,df3,df4,df5])
+# Exibindo informações do DataFrame
+print("Informações do DataFrame:")
+print(df.info())
 
-#Exibindo as 5 primeiras linhas
-df.head()
+# Exibindo as 5 primeiras linhas
+print("\n5 Primeiras Linhas:")
+print(df.head())
 
-#Exibindo as 5 últimas linhas
-df.tail()
+# Exibindo as 5 últimas linhas
+print("\n5 Últimas Linhas:")
+print(df.tail())
 
-df.sample(5)
+# Verificando o tipo de dado de cada coluna
+print("\nTipos de Dados:")
+print(df.dtypes)
 
-#Verificando o tipo de dado de cada coluna
-df.dtypes
-
-#Alterando o tipo de dado da coluna LojaID
+# Alterando o tipo de dado da coluna LojaID
 df["LojaID"] = df["LojaID"].astype("object")
 
-df.dtypes
+# Consultando linhas com valores faltantes
+print("\nValores Faltantes:")
+print(df.isnull().sum())
 
-df.head()
-
-#Consultando linhas com valores faltantes
-df.isnull().sum()
-
-#Substituindo os valores nulos pela média
+# Substituindo os valores nulos pela média
 df["Vendas"].fillna(df["Vendas"].mean(), inplace=True)
 
-df["Vendas"].mean()
-
-df.isnull().sum()
-
-df.sample(15)
-
-#Substituindo os valores nulos por zero
+# Substituindo os valores nulos por zero
 df["Vendas"].fillna(0, inplace=True)
 
-#Apagando as linhas com valores nulos
+# Apagando as linhas com valores nulos
 df.dropna(inplace=True)
 
-#Apagando as linhas com valores nulos com base apenas em 1 coluna
+# Apagando as linhas com valores nulos com base apenas em 1 coluna
 df.dropna(subset=["Vendas"], inplace=True)
 
-#Removendo linhas que estejam com valores faltantes em todas as colunas
+# Removendo linhas que estejam com valores faltantes em todas as colunas
 df.dropna(how="all", inplace=True)
 
-#Criando a coluna de receita
+# Criando a coluna de receita
 df["Receita"] = df["Vendas"].mul(df["Qtde"])
 
-df.head()
+# Criando a coluna de Receita/Vendas
+df["Receita/Vendas"] = df["Receita"] / df["Vendas"]
 
-df["Receita/Vendas"] = df["Receita"] / df["Vendas"] 
+# Retornando a maior e menor receita
+print("\nMaior Receita:", df["Receita"].max())
+print("Menor Receita:", df["Receita"].min())
 
-df.head()
+# nlargest e nsmallest
+print("\nTop 3 Receitas:")
+print(df.nlargest(3, "Receita"))
+print("Bottom 3 Receitas:")
+print(df.nsmallest(3, "Receita"))
 
-#Retornando a maior receita
-df["Receita"].max()
+# Agrupamento por cidade
+print("\nReceita por Cidade:")
+print(df.groupby("Cidade")["Receita"].sum())
 
-#Retornando a menor receita
-df["Receita"].min()
+# Ordenando o conjunto de dados
+print("\nTop 10 Receitas:")
+print(df.sort_values("Receita", ascending=False).head(10))
 
-#nlargest
-df.nlargest(3, "Receita")
-
-#nsmallest
-df.nsmallest(3, "Receita")
-
-#Agrupamento por cidade
-df.groupby("Cidade")["Receita"].sum()
-
-#Ordenando o conjunto de dados
-df.sort_values("Receita", ascending=False).head(10)
-
-#Trasnformando a coluna de data em tipo inteiro
+# Transformando a coluna de data em tipo inteiro
 df["Data"] = df["Data"].astype("int64")
 
-#Verificando o tipo de dado de cada coluna
-df.dtypes
-
-#Transformando coluna de data em data
+# Transformando coluna de data em data
 df["Data"] = pd.to_datetime(df["Data"])
 
-df.dtypes
+# Agrupamento por ano
+print("\nReceita por Ano:")
+print(df.groupby(df["Data"].dt.year)["Receita"].sum())
 
-#Agrupamento por ano
-df.groupby(df["Data"].dt.year)["Receita"].sum()
-
-#Criando uma nova coluna com o ano
+# Criando uma nova coluna com o ano
 df["Ano_Venda"] = df["Data"].dt.year
 
-df.sample(5)
-
-#Extraindo o mês e o dia
+# Extraindo o mês e o dia
 df["mes_venda"], df["dia_venda"] = (df["Data"].dt.month, df["Data"].dt.day)
 
-df.sample(5)
+# Retornando a data mais antiga
+print("\nData mais antiga:", df["Data"].min())
 
-#Retornando a data mais antiga
-df["Data"].min()
+# Calculando a diferença de dias
+df["diferenca_dias"] = (df["Data"] - df["Data"].min()).dt.days
 
-#Calculando a diferença de dias
-df["diferenca_dias"] = df["Data"] - df["Data"].min()
-
-df.sample(5)
-
-#Criando a coluna de trimestre
+# Criando a coluna de trimestre
 df["trimestre_venda"] = df["Data"].dt.quarter
 
-df.sample(5)
-
-#Filtrando as vendas de 2019 do mês de março
+# Filtrando as vendas de 2019 do mês de março
 vendas_marco_19 = df.loc[(df["Data"].dt.year == 2019) & (df["Data"].dt.month == 3)]
 
-vendas_marco_19.sample(20)
+# Exibindo a amostra de 20 linhas
+print("\nVendas de Março de 2019:")
+print(vendas_marco_19.sample(20))
 
-df["LojaID"].value_counts(ascending=False)
+# Contagem de LojaID
+print("\nContagem de LojaID:")
+print(df["LojaID"].value_counts(ascending=False))
 
-#Gráfico de barras
-df["LojaID"].value_counts(ascending=False).plot.bar()
+# Gráfico de barras
+df["LojaID"].value_counts(ascending=False).plot.bar(title="Total vendas por LojaID", color="blue")
+plt.xlabel("LojaID")
+plt.ylabel("Total Vendas")
+plt.show()
 
-#Gráfico de barras horizontais
-df["LojaID"].value_counts().plot.barh()
+# Gráfico de barras horizontais
+df["LojaID"].value_counts().plot.barh(title="Total vendas por LojaID", color="green")
+plt.xlabel("Total Vendas")
+plt.ylabel("LojaID")
+plt.show()
 
-#Gráfico de barras horizontais
-df["LojaID"].value_counts(ascending=True).plot.barh();
+# Gráfico de barras horizontais ordenado
+df["LojaID"].value_counts(ascending=True).plot.barh(title="Total vendas por LojaID", color="purple")
+plt.xlabel("Total Vendas")
+plt.ylabel("LojaID")
+plt.show()
 
-#Gráfico de Pizza
-df.groupby(df["Data"].dt.year)["Receita"].sum().plot.pie()
+# Gráfico de Pizza
+df.groupby(df["Data"].dt.year)["Receita"].sum().plot.pie(title="Receita por Ano", autopct='%1.1f%%')
+plt.show()
 
-#Total vendas por cidade
-df["Cidade"].value_counts()
+# Total vendas por cidade
+print("\nTotal vendas por Cidade:")
+print(df["Cidade"].value_counts())
 
-#Adicionando um título e alterando o nome dos eixos
-import matplotlib.pyplot as plt
-df["Cidade"].value_counts().plot.bar(title="Total vendas por Cidade")
+# Gráfico de barras para vendas por cidade
+df["Cidade"].value_counts().plot.bar(title="Total vendas por Cidade", color="orange")
 plt.xlabel("Cidade")
-plt.ylabel("Total Vendas");
+plt.ylabel("Total Vendas")
+plt.show()
 
-#Alterando a cor
-df["Cidade"].value_counts().plot.bar(title="Total vendas por Cidade", color="red")
-plt.xlabel("Cidade")
-plt.ylabel("Total Vendas");
-
-#Alterando o estilo
-plt.style.use("ggplot")
-
-df.groupby(df["mes_venda"])["Qtde"].sum().plot(title = "Total Produtos vendidos x mês")
-plt.xlabel("Mês")
-plt.ylabel("Total Produtos Vendidos")
-plt.legend();
-
-df.groupby(df["mes_venda"])["Qtde"].sum()
-
-#Selecionando apenas as vendas de 2019
-df_2019 = df[df["Ano_Venda"] == 2019]
-
-df_2019.groupby(df_2019["mes_venda"])["Qtde"].sum()
-
-#Total produtos vendidos por mês
-df_2019.groupby(df_2019["mes_venda"])["Qtde"].sum().plot(marker = "o")
-plt.xlabel("Mês")
-plt.ylabel("Total Produtos Vendidos")
-plt.legend();
-
-#Hisograma
-plt.hist(df["Qtde"], color="orangered");
-
-plt.scatter(x=df_2019["dia_venda"], y = df_2019["Receita"]);
-
-#Salvando em png
-df_2019.groupby(df_2019["mes_venda"])["Qtde"].sum().plot(marker = "v")
+# Salvando o gráfico em PNG
+df_2019.groupby(df_2019["mes_venda"])["Qtde"].sum().plot(marker="v")
 plt.title("Quantidade de produtos vendidos x mês")
 plt.xlabel("Mês")
-plt.ylabel("Total Produtos Vendidos");
+plt.ylabel("Total Produtos Vendidos")
 plt.legend()
 plt.savefig("grafico QTDE x MES.png")
+plt.show()

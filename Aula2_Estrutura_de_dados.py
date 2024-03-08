@@ -1,91 +1,96 @@
-#Criando uma lista chamada animais
-animais = [1,2,3]
-animais
+# Criando uma lista chamada animais
+animais = [1, 2, 3]
+print("Lista de animais inicial:", animais)
 
+# Atualizando a lista com diferentes tipos de elementos
 animais = ["cachorro", "gato", 12345, 6.5]
-animais
+print("Lista de animais atualizada:", animais)
 
-#Imprimindo o primeiro elemento da lista
-animais[0]
+# Imprimindo elementos específicos da lista
+print("Primeiro elemento da lista:", animais[0])
+print("Quarto elemento da lista:", animais[3])
 
-#Imprimindo o 4 elemento da lista
-animais[3]
-
-#Substituindo o primeiro elemento da lista
+# Substituindo o primeiro elemento da lista
 animais[0] = "papagaio"
+print("Lista após substituição:", animais)
 
-animais
-
-#Removendo gato da lista
+# Removendo "gato" da lista
 animais.remove("gato")
+print("Lista após remoção de 'gato':", animais)
 
-animais
+# Obtendo o comprimento da lista
+comprimento_lista = len(animais)
+print("Comprimento da lista:", comprimento_lista)
 
-len(animais)
+# Verificando se "gato" está na lista
+verificar_gato = "gato" in animais
+print("A presença de 'gato' na lista é:", verificar_gato)
 
-"gato" in animais
+# Trabalhando com uma lista numérica
+lista_numerica = [500, 30, 300, 80, 10]
+print("Lista numérica original:", lista_numerica)
 
-lista = [500, 30, 300, 80, 10]
+# Encontrando o máximo e o mínimo na lista
+maximo_lista = max(lista_numerica)
+minimo_lista = min(lista_numerica)
+print("Máximo da lista numérica:", maximo_lista)
+print("Mínimo da lista numérica:", minimo_lista)
 
-max(lista)
-
-min(lista)
-
+# Adicionando novos elementos à lista "animais"
 animais.append(["leão", "Cachorro"])
+print("Lista após append:", animais)
 
-animais
-
+# Extendendo a lista "animais" com novos elementos
 animais.extend(["cobra", 6])
+print("Lista após extend:", animais)
 
-animais
+# Contando ocorrências de "leão" na lista
+ocorrencias_leao = animais.count("leão")
+print("Ocorrências de 'leão' na lista:", ocorrencias_leao)
 
-animais.count("leão")
-
-lista.sort()
-
-lista
-
-
-
+# Ordenando a lista numérica
+lista_numerica.sort()
+print("Lista numérica ordenada:", lista_numerica)
 
 
-
-#As tuplas usam parênteses como sintaxe
+# Trabalhando com tuplas
 tp = ("Banana", "Maçã", 10, 50)
+print("Tupla original:", tp)
 
-#Retornando o primeiro elemento
-tp[0]
+# Acessando elementos da tupla
+primeiro_elemento_tupla = tp[0]
+print("Primeiro elemento da tupla:", primeiro_elemento_tupla)
 
-#Diferente das listas as tuplas são imutáveis, o que quer dizer que não podemos alterar os seus elementos
-tp[0] = "Laranja"
+# Tentativa de alterar elemento da tupla (resultará em erro)
+# tp[0] = "Laranja"
 
-tp.count("Maçã")
+# Contando ocorrências de "Maçã" na tupla
+ocorrencias_maca_tupla = tp.count("Maçã")
+print("Ocorrências de 'Maçã' na tupla:", ocorrencias_maca_tupla)
 
-tp[0:2]
+# Acessando uma fatia da tupla
+fatia_tupla = tp[0:2]
+print("Fatia da tupla:", fatia_tupla)
 
 
+# Trabalhando com dicionários
+dc = {"Maçã": 20, "Banana": 10, "Laranja": 15, "Uva": 5}
+print("Dicionário original:", dc)
 
+# Acessando o valor de uma chave no dicionário
+valor_maca = dc["Maçã"]
+print("Valor correspondente à chave 'Maçã':", valor_maca)
 
-
-#Para criar um dicionário utilizamos as {}
-dc = {"Maçã":20, "Banana":10, "Laranja":15, "Uva":5} #Dicionários trabalham com o condeito chave e valor
-
-dc
-
-#Acessando o valor de um dicionário através da chave
-dc["Maçã"]
-
-#Atualizando o valor da Maçã
+# Atualizando o valor da chave 'Maçã'
 dc["Maçã"] = 25
-dc
+print("Dicionário após atualização:", dc)
 
-#Retornando todas as chaves do dicionário
-dc.keys()
+# Retornando todas as chaves e valores do dicionário
+chaves_dicionario = dc.keys()
+valores_dicionario = dc.values()
+print("Chaves do dicionário:", chaves_dicionario)
+print("Valores do dicionário:", valores_dicionario)
 
-#Retornando os valores do dicionário
-dc.values()
-
-#Verificando se já existe uma chave no dicionário e caso não exista inserir
+# Verificando e inserindo uma nova chave no dicionário
 dc.setdefault("Limão", 22)
-
-dc
+print("Dicionário após setdefault:", dc)
